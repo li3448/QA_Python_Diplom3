@@ -19,13 +19,18 @@ class IndexPage(BasePage):
         ingredients = self.get_visible_elements(IndexPageLocators.LIST_OF_INGREDIENTS)
         ingredients[index].click()
 
+
+    @allure.step('Клик на крестик во всплывающем окне')
+
     @allure.step('Клик на крестик')
+
     def click_cross_button_in_popup_window(self):
         self.click_by_element(IndexPageLocators.BUTTON_CROSS_IN_POPUP_WINDOW)
 
     @allure.step("Клик на кнопку 'Оформить заказ'")
     def click_button_place_order(self):
         self.click_by_element(IndexPageLocators.BUTTON_PLACE_ORDER)
+
 
     @allure.step('Добавление ингредиента в заказ')
     def add_ingredient_to_order_by_index(self, index):
@@ -38,7 +43,9 @@ class IndexPage(BasePage):
         ingredients = self.get_visible_elements(IndexPageLocators.LIST_OF_INGREDIENTS)
         return ingredients[index].text.split('\n')[2]
 
+
     @allure.step('Получение названия ингредиента в окне деталей')
+
     def get_ingredient_name_in_details_window(self):
         return self.get_visible_element(IndexPageLocators.TEXT_NAME_INGREDIENT_IN_DETAILS_WINDOW).text
 
@@ -53,6 +60,8 @@ class IndexPage(BasePage):
     @allure.step("Получение web-элемента 'Детали ингредиента'")
     def get_popup_details_window(self):
         return self.get_visible_element(IndexPageLocators.MODAL_POPUP_WINDOW)
+
+
 
     @allure.step('Получение значения счетчика ингредиентов')
     def get_counter_ingredient_by_index_(self, index):

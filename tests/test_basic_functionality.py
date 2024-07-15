@@ -4,12 +4,17 @@ import pytest
 
 class TestBasicFunctionality:
 
+
     @allure.title('Переход по клику на ссылку «Конструктор» в шапке сайта')
     def test_goto_by_click_link_constructor(self, header, index_page):
         index_page.open_index_page()
         header.click_by_link_orders_feed()
         header.click_by_link_constructor()
 
+        with allure.step(f'Проверяем текущий url (URL = {header.current_url})'):
+            assert header.current_url == index_page.URL
+
+    @allure.title('Проверка перехода по клику на ссылку «Лента заказов» в шапке сайта')
         with allure.step(f'Проверка текущего url (URL = {header.current_url})'):
             assert header.current_url == index_page.URL
 
@@ -17,7 +22,10 @@ class TestBasicFunctionality:
     def test_goto_by_click_link_orders_feed(self, header, index_page, order_feed_page):
         index_page.open_index_page()
         header.click_by_link_orders_feed()
+        with allure.step(f'Проверяем текущий url (URL = {header.current_url})'):
+            assert header.current_url == order_feed_page.URL
 
+    @allure.title('Проверка появления всплывающего окно с деталями при кликнуть на ингредиент')
         with allure.step(f'Проверка текущего url (URL = {header.current_url})'):
             assert header.current_url == order_feed_page.URL
 
@@ -26,7 +34,11 @@ class TestBasicFunctionality:
         index_page.open_index_page()
         ingredient_name = index_page.get_name_ingredient_by_index_(0)
         index_page.click_on_ingredient_by_index_(0)
+        
+        with allure.step(f'Проверяем открылось ли окно с деталями об ингредиенте ({ingredient_name})'):
+            assert index_page.get_ingredient_name_in_details_window() == ingredient_name
 
+    @allure.title('Проверка закрытия всплывающего окна с деталями о ингредиенте кликом по крестику')
         with allure.step(f'Проверка открытия окна с деталями ингридиента ({ingredient_name})'):
             assert index_page.get_ingredient_name_in_details_window() == ingredient_name
 
@@ -36,7 +48,6 @@ class TestBasicFunctionality:
         index_page.click_on_ingredient_by_index_(1)
         popup_window = index_page.get_popup_details_window()
         index_page.click_cross_button_in_popup_window()
-
         with allure.step(f'Проверка что окно с деталями об ингредиенте закрылось'):
             assert 'Modal_modal_opened' not in popup_window.get_attribute('class')
 

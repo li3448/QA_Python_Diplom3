@@ -10,6 +10,8 @@ from pages.login_page import LoginPage
 from pages.orders_feed_page import OrdersFeedPage
 from pages.forgot_password_page import ForgotPasswordPage
 from pages.reset_password_page import ResetPasswordPage
+from pages.account_profile_page import AccountProfilePage
+from pages.account_order_history_page import AccountOrderHistoryPage
 from pages.header import Header
 from config import URL
 from config import Browsers
@@ -20,6 +22,21 @@ from helpers import create_order
 def user():
     fake = Faker()
     payload = {
+
+        "email": f'ake2014{fake.email()}',
+        "password": fake.password(),
+        "name": fake.user_name()
+    }
+    yield payload
+
+
+@pytest.fixture()
+def create_user(user):
+    try:
+        with allure.step('Отправляем запрос на создание пользователя'):
+            response = requests.post(f'https://stellarburgers.nomoreparties.site/api/auth/register', json=user)
+            response.raise_for_status()
+
         "email": f'yva2024{fake.email()}',
         "password": fake.password(),
         "name": fake.user_name()
@@ -27,10 +44,27 @@ def user():
     try:
         with allure.step('Отправляем запрос на создание пользователя'):
             response = requests.post(f'{URL}/api/auth/register', json=payload)
+            
     except requests.RequestException as e:
         raise e
     else:
         access_token = response.json()['accessToken']
+        
+        del user['name']
+
+        yield user, access_token
+
+
+@pytest.fixture()
+def delete_user(create_user):
+    user, access_token = create_user
+    headers = {"Authorization": access_token}
+    try:
+        with allure.step('Отправляем запрос на удаление пользователя'):
+            requests.delete("https://stellarburgers.nomoreparties.site/api/auth/user", headers=headers)
+    except requests.RequestException as e:
+        raise e
+        
         del payload['name']
 
         yield payload   # email, password
@@ -39,6 +73,7 @@ def user():
             headers = {"Authorization": access_token}
             requests.delete(f'{URL}/api/auth/user', headers=headers)
 
+            
 
 @pytest.fixture(params=[Browsers.CHROME, Browsers.FIREFOX])
 def web_drv(request):

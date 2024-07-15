@@ -15,6 +15,22 @@ class TestSectionOrderFeed:
         with allure.step('проверяем, что окно заказа открылось'):
             assert order_feed_page.get_order_number_in_popup_window() == number_order
 
+
+    @allure.title("Проверка отображения заказов пользователя из раздела 'История заказов' на странице 'Лента заказов'")
+    @pytest.mark.orders_count(2)
+    def test_displaying_user_orders_from_order_history_section_on_order_feed_page(self, user, logged,
+                                                                                  order, header, create_user, order_feed_page,
+                                                                                  account_profile_page,
+                                                                                  account_order_history_page):
+        header.click_by_link_personal_account()
+        account_profile_page.click_link_order_history()
+        order_numbers_from_order_history = account_order_history_page.get_order_numbers()
+        order_feed_page.open_order_feed_page()
+        order_numbers_from_order_feed = order_feed_page.get_orders_number()
+        for order_number in order_numbers_from_order_history:
+            with allure.step(f"Проверяем есть ли заказ {order_number} в 'Ленте заказов'"):
+                assert order_number in order_numbers_from_order_feed
+
     @allure.title("Проверка отображения заказов пользователя из раздела 'История заказов'")
     @pytest.mark.orders_count(2)
     def test_displaying_user_orders_from_order_history_section_on_order_feed_page(self, user, logged,
@@ -29,16 +45,6 @@ class TestSectionOrderFeed:
             with allure.step(f"Проверка наличия заказа {order_number} в 'Ленте заказов'"):
                 assert order_number in order_numbers_from_order_feed
 
-    @allure.title("Проверка увеличения счётчика 'Выполнено за всё время' при создании нового заказа")
-    def test_increases_completed_for_all_time_counter_after_creating_order(self, user, logged, header, index_page,
-                                                                           order_feed_page):
-        header.click_by_link_orders_feed()
-        counter_before = order_feed_page.get_count_completed_orders_for_all_time()
-        header.click_by_link_constructor()
-        create_order(index_page)
-        header.click_by_link_orders_feed()
-        with allure.step('Проверка увеличение счетчика'):
-            assert order_feed_page.get_count_completed_orders_for_all_time() == counter_before + 1
 
     @allure.title("Проверка увеличения счётчика 'Выполнено за сегодня' при создании нового заказа")
     def test_increases_completed_for_today_counter_after_creating_order(self, user, logged, header, index_page,

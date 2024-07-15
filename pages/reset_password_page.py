@@ -18,6 +18,8 @@ class ResetPasswordPage(BasePage):
     def wait_load_page(self):
         self.wait_visible_element(ResetPasswordPageLocators.ICON_IN_FIELD_PASSWORD)
 
+
+   
     @allure.step('Клик на кнопку скрыть/показать пароль')
     def click_icon_in_field_password(self):
         self.click_by_element(ResetPasswordPageLocators.ICON_IN_FIELD_PASSWORD)

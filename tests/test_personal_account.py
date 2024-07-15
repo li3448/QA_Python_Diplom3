@@ -1,12 +1,25 @@
 import allure
 import pytest
 
+
 class TestPersonalAccount:
 
     @allure.title("Проверка перехода в личный кабинет по ссылке 'Личный кабинет' в шапке")
     def test_go_to_personal_account_by_link_header(self, logged, header, account_profile_page):
         header.click_by_link_personal_account()
         account_profile_page.wait_loading_page()
+        with allure.step(f'Проверяем текущий url (URL = {header.current_url})'):
+            assert header.current_url == account_profile_page.URL
+
+    @allure.title("Проверка переход в раздел личного кабинета 'История заказов'")
+    def test_go_to_order_history_section_by_click_link_order_history(self, logged, header, account_profile_page,
+                                                                     account_order_history_page):
+        header.click_by_link_personal_account()
+        account_profile_page.click_link_order_history()
+        with allure.step(f'Проверяем текущий url (URL = {account_profile_page.current_url})'):
+            assert account_profile_page.current_url == account_order_history_page.URL
+
+    @allure.title("Проверка выхода из аккаунта")
         with allure.step(f'Проверка текущего url (URL = {header.current_url})'):
             assert header.current_url == account_profile_page.URL
 
@@ -22,7 +35,8 @@ class TestPersonalAccount:
         header.click_by_link_personal_account()
         account_profile_page.click_button_exit()
         login_page.wait_loading_page()
-        with allure.step(f'Проверка текущего url (URL = {account_profile_page.current_url})'):
+        
+        with allure.step(f'Проверяем текущий url (URL = {account_profile_page.current_url})'):
             assert account_profile_page.current_url == login_page.URL
 
     @allure.title("Переход на страницу восстановления пароля по ссылке 'Восстановить пароль'")
@@ -53,3 +67,4 @@ class TestPersonalAccount:
                 f"Проверка, что класс объекта содержит 'input_status_active' "
                 f"(class = {border.get_attribute('class')})"):
             assert 'input_status_active' in border.get_attribute('class')
+

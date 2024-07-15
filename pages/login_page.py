@@ -11,6 +11,8 @@ class LoginPage(BasePage):
         self.URL = f'{URL}/login'
 
     def open_login_page(self):
+
+
         with allure.step(f'Открытие страницы {self.URL}'):
             self.open_page(self.URL)
 
@@ -21,6 +23,15 @@ class LoginPage(BasePage):
     @allure.step("Клик на ссылку 'Восстановить пароль'")
     def click_link_recovery_password(self):
         self.click_by_element(LoginPageLocators.LINK_RECOVERY_PASSWORD)
+
+    @allure.step("Заполнение поле 'E-mail'")
+    def fill_email_field(self, email):
+        self.fill_field(LoginPageLocators.INPUT_FIELD_EMAIL, email)
+
+    @allure.step("Заполнение поле 'Password'")
+    def fill_password_field(self, password):
+        self.fill_field(LoginPageLocators.INPUT_FIELD_PASSWORD, password)
+
 
     @allure.step("Заполнение поля 'E-mail'")
     def fill_email_field(self, email):
