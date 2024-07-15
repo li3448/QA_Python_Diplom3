@@ -19,7 +19,11 @@ class IndexPage(BasePage):
         ingredients = self.get_visible_elements(IndexPageLocators.LIST_OF_INGREDIENTS)
         ingredients[index].click()
 
+
     @allure.step('Клик на крестик во всплывающем окне')
+
+    @allure.step('Клик на крестик')
+
     def click_cross_button_in_popup_window(self):
         self.click_by_element(IndexPageLocators.BUTTON_CROSS_IN_POPUP_WINDOW)
 
@@ -27,7 +31,8 @@ class IndexPage(BasePage):
     def click_button_place_order(self):
         self.click_by_element(IndexPageLocators.BUTTON_PLACE_ORDER)
 
-    @allure.step('Добавление ингредиент в заказ')
+
+    @allure.step('Добавление ингредиента в заказ')
     def add_ingredient_to_order_by_index(self, index):
         ingredients = self.get_visible_elements(IndexPageLocators.LIST_OF_INGREDIENTS)
         basket = self.get_visible_element(IndexPageLocators.SECTION_CONSTRUCTOR_BASKET)
@@ -38,7 +43,9 @@ class IndexPage(BasePage):
         ingredients = self.get_visible_elements(IndexPageLocators.LIST_OF_INGREDIENTS)
         return ingredients[index].text.split('\n')[2]
 
-    @allure.step('Получение названия ингредиента в окне с деталями')
+
+    @allure.step('Получение названия ингредиента в окне деталей')
+
     def get_ingredient_name_in_details_window(self):
         return self.get_visible_element(IndexPageLocators.TEXT_NAME_INGREDIENT_IN_DETAILS_WINDOW).text
 
@@ -54,7 +61,9 @@ class IndexPage(BasePage):
     def get_popup_details_window(self):
         return self.get_visible_element(IndexPageLocators.MODAL_POPUP_WINDOW)
 
-    @allure.step('Получение значение счетчика ингредиента')
+
+
+    @allure.step('Получение значения счетчика ингредиентов')
     def get_counter_ingredient_by_index_(self, index):
         counters = self.get_visible_elements(IndexPageLocators.LIST_COUNTERS_OF_INGREDIENTS)
         return int(counters[index].text)

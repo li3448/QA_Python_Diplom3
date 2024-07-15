@@ -11,7 +11,9 @@ class LoginPage(BasePage):
         self.URL = f'{URL}/login'
 
     def open_login_page(self):
-        with allure.step(f'Открываем страницу {self.URL}'):
+
+
+        with allure.step(f'Открытие страницы {self.URL}'):
             self.open_page(self.URL)
 
     @allure.step('Ожидание загрузки страницы')
@@ -30,7 +32,16 @@ class LoginPage(BasePage):
     def fill_password_field(self, password):
         self.fill_field(LoginPageLocators.INPUT_FIELD_PASSWORD, password)
 
-    @allure.step("Клик на кнопку 'Войти'")
+
+    @allure.step("Заполнение поля 'E-mail'")
+    def fill_email_field(self, email):
+        self.fill_field(LoginPageLocators.INPUT_FIELD_EMAIL, email)
+
+    @allure.step("Заполнение поля 'Password'")
+    def fill_password_field(self, password):
+        self.fill_field(LoginPageLocators.INPUT_FIELD_PASSWORD, password)
+
+    @allure.step("Нажатие на кнопку 'Войти'")
     def click_button_enter(self):
         self.click_by_element(LoginPageLocators.BUTTON_ENTER)
 
